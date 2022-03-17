@@ -1,7 +1,30 @@
 //import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Button from "./boton";
+// componente reutilizable
 
+const arreglo = ["uno", "dos", "tres"];
 
+const App = () => {
+  
+  const condicional = false;
+
+  if (condicional) {
+    return <p>condicion verdadera</p>;
+  }
+
+  return (
+    <div>
+      <h1>Hola Mundo</h1>
+      {arreglo.map((elemento) => (
+        <p key={elemento}>{elemento}</p>
+      ))}
+      <Button onClick={(e) => console.log("clickeado", e)}>Enviar</Button>
+    </div>
+  );
+};
+
+/*
 const estilo2={
   boxShadow:'0 5px 3px rgba(0,0,0,0.5)'
 }
@@ -24,7 +47,7 @@ const App=()=>{
   return (<ul style={estilo({bg:"#750"})} className="clase-css">
     <Li estado="feliz">valor de li { valor }</Li>
     </ul>)
-}
+}*/
 
 /*
 function App() {
