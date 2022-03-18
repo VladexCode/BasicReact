@@ -1,75 +1,69 @@
-//import logo from './logo.svg';
-import "./App.css";
-import Button from "./boton";
-// componente reutilizable
+import { Component } from "react";
+import Productos from "./components/Productos";
+import Layout from "./components/Layout";
+import Title from "./components/Title";
+import Navbar from "./components/Navbar";
 
-const arreglo = ["uno", "dos", "tres"];
+class App extends Component {
+  state = {
+    productos: [
+      { name: "tomate", price: 100, img: "/productos/tomate.jpg" },
+      { name: "arbejas", price: 200, img: "/productos/arbejas.jpg" },
+      { name: "lechuga", price: 300, img: "/productos/lechuga.jpg" },
+    ],
+    carro: [
+      //  {name: 'tomate', price: 100, img: '/productos/tomate.jpg',cantidad:1}
+    ],
 
-const App = () => {
-  
-  const condicional = false;
+    esCarroVisible: false,
+  };
 
-  if (condicional) {
-    return <p>condicion verdadera</p>;
+  agregarAlCarro = (producto) => {
+    const { carro } = this.state;
+    if (carro.find((x) => x.name === producto.name)) {
+      const newCarro = carro.map((x) =>
+        x.name === producto.name ? { ...x, cantidad: x.cantidad + 1 } : x
+      );
+      return this.setState({ carro: newCarro });
+    }
+
+    console.log(producto);
+    return this.setState({
+      carro: this.state.carro.concat({
+        ...producto,
+        cantidad: 1,
+      }),
+    });
+  };
+
+  mostrarCarro = () => {
+    if (!this.state.carro.length) {
+      return;
+    }
+    this.setState({ esCarroVisible: !this.state.esCarroVisible });
+  };
+
+  render() {
+    console.log(this.state);
+    const { esCarroVisible } = this.state;
+    return (
+      <div>
+        <Navbar
+          carro={this.state.carro}
+          esCarroVisible={esCarroVisible}
+          mostrarCarro={this.mostrarCarro}
+        />
+        <Layout>
+          <Title />
+          <Productos
+            agregarAlCarro={this.agregarAlCarro}
+            //agregarAlCarro={()=>console.log('click')}
+            productos={this.state.productos}
+          />
+        </Layout>
+      </div>
+    );
   }
-
-  return (
-    <div>
-      <h1>Hola Mundo</h1>
-      {arreglo.map((elemento) => (
-        <p key={elemento}>{elemento}</p>
-      ))}
-      <Button onClick={(e) => console.log("clickeado", e)}>Enviar</Button>
-    </div>
-  );
-};
-
-/*
-const estilo2={
-  boxShadow:'0 5px 3px rgba(0,0,0,0.5)'
 }
-
-const estilo=({bg="#222"})=>({
-  backgroundColor:bg,
-  color:'#fff',
-  padding:'10px 15px',
-  margin:'10px 15px'
-});
-
-
-const Li=({children})=>{
-  return (<li style={{...estilo2,...estilo({bg:'#333'})}}
-  className='clase-li'>{children}</li>)
-}
-
-const App=()=>{
-  const valor="triste";
-  return (<ul style={estilo({bg:"#750"})} className="clase-css">
-    <Li estado="feliz">valor de li { valor }</Li>
-    </ul>)
-}*/
-
-/*
-function App() {
- return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-
-}*/
 
 export default App;
